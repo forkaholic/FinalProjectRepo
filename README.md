@@ -1,22 +1,25 @@
-# Your project name
+# Big Calculator Energy
 
-## Description
+## a basic and scientific calculator for smart kids
 
-Describe briefly what your project is all about.
+An application to aid in smalll mathematical and scientific claculations. 
 
 ## Deliverables
 
-List all the things you want to deliver by the end of the semester.
+TBD
+
 
 ## Features 
 List all the features of your application in the order of priority.
-1. Feature #1
-2. Feature #2
-3. Feature #3 
-...
+1. basic math function +,+,x,/
+2. scientific operations logs, exponents, e, etc.
+3. Nice looking GUI
+4. History of calculation and being able to call back to previous entries.
+5. ability to ceate small programs
 
 ## Team members
 
-* Roger Federer, Team Lead
-* Tiger Woods, Bug Fixer
+* Owen Ploss, project member
+* Devin Saltar
+* Trevon Plummer
 

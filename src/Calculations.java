@@ -8,5 +8,5 @@ public class Calculations {
   }
   public double calculate() {
     return ...;
-  }  
+ ; }  
 }

@@ -2,11 +2,13 @@ package edu.wit.cs.comp1050;
 import java.util.ArrayList;
 //Late as Always
 @SuppressWarnings("serial")
-public class BasicCalculator extends ArrayList<Calculation> {
+public class BasicCalculator {
 	
-	private double lastResult;
+	private ArrayList<String> array; 
 	
-	public BasicCalculator() {}
+	public BasicCalculator() {
+		array = new ArrayList<>(10);
+	}
 	
 	/**
 	 * This method adds two numbers together.
@@ -52,19 +54,40 @@ public class BasicCalculator extends ArrayList<Calculation> {
 	 * This method saves the result of the previous calculation.
 	 * @param num lastResult
 	 */
-	public void setResult(double num) {
-		this.lastResult = num;
+	public void setResult(String calc) {
+		this.array.add(calc);
 	}
 	
 	/**
 	 * This method sets lastResult as the previous calculation's value.
 	 * @return lastResult
 	 */
-	public double getResult() {
-		return this.lastResult;
+	public String getResult() {
+		return this.array.size() != 0 ? this.array.get(this.array.size()) : null;
+	}
+	 
+	/**
+	  * This method solves any given calculation unless is violates a rule given by the functions or is missing parenthesis.
+	  * @return solution
+	  */
+	public String solve() {
+		return "solution";
 	}
 	
-	public void start() {
-		
+	/**
+	 * This method returns a clone of the calculations array
+	 * @return size
+	 */
+	@SuppressWarnings("unchecked")
+	public ArrayList<String> getArr() {
+		ArrayList<String> clone = (ArrayList<String>) array.clone();
+		return clone;
+	}
+	
+	/**
+	 * This method removes the first String in the array
+	 */
+	public void removeFirst() {
+		array.remove(0);
 	}
 }

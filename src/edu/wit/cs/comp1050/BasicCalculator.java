@@ -1,5 +1,7 @@
 package edu.wit.cs.comp1050;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Stack;
 //Late as Always
 @SuppressWarnings("serial")
 public class BasicCalculator {
@@ -63,15 +65,82 @@ public class BasicCalculator {
 	 * @return lastResult
 	 */
 	public String getResult() {
-		return this.array.size() != 0 ? this.array.get(this.array.size()) : null;
+		return this.array.size() != 0 ? this.array.get(this.array.size() - 1) : null;
 	}
 	 
 	/**
-	  * This method solves any given calculation unless is violates a rule given by the functions or is missing parenthesis.
+	  * This method solves any given calculation unless is violates a rule given by the functions or has unbalanced parenthesis.
 	  * @return solution
 	  */
 	public String solve() {
-		return "solution";
+		try {
+			String temp = this.getResult();
+			StringBuilder tEquation = new StringBuilder();
+			for(int i = 0; i < temp.length(); i++) {
+				char c = temp.charAt(i);
+				if(c == '+' || c == '-' || c == '*' || c == '/') {
+					tEquation.append(" ");
+					tEquation.append(c);
+					tEquation.append(" ");
+				}
+				else {
+					tEquation.append(c);
+				}
+			}
+			
+			String[] strings = tEquation.toString().split(" ");
+			if(strings.length == 1) {
+				try {
+					return Double.toString(Double.parseDouble(strings[0]));
+				} catch(Exception e) {return "Error - No numbers entered.";}
+			}
+			//Stack for all numbers
+			Stack<String> operands = new Stack<>();
+			//Stack for all symbols
+			Stack<String> operators = new Stack<>();
+			for(int i = 0; i < strings.length; i++) {
+				if(strings[i].equals("+") || strings[i].equals("-")){
+					operators.push(strings[i]);
+				}
+				else if(strings[i].equals("*") || strings[i].equals("/")) {
+					i++;
+					operands.push(strings[i]);
+					if(strings[i - 1].equals("*")) {
+						//Removes and multiplies the two most recent numbers found and pushes the result to the stack (order doesn't matter for multiplication)
+						Double d2 = Double.parseDouble(operands.pop());
+						Double d1 = Double.parseDouble(operands.pop());
+						operands.push(Double.toString(multiply(d1, d2)));
+					}
+					else {
+						Double d2 = Double.parseDouble(operands.pop());
+						Double d1 = Double.parseDouble(operands.pop());
+						Double d = divide(d1, d2);
+						if(d == null) {
+							return "Error - Divided by 0.";
+						}
+						operands.push(Double.toString(d));
+					}
+				}
+				else {
+					operands.push(strings[i]);
+					System.out.println(strings[0]);
+				}
+				
+			}
+			
+			while(!operators.isEmpty()) {
+				String op = operators.pop();
+				Double d2 = Double.parseDouble(operands.pop());
+				Double d1 = Double.parseDouble(operands.pop());
+				if(op.equals("+")) {
+					operands.push(Double.toString(add(d1, d2)));
+				}
+				else {
+					operands.push(Double.toString(subtract(d1, d2)));
+				}
+			}
+			return operands.pop();
+		} catch(Exception e) {return "Error - Invalid equation.";} 
 	}
 	
 	/**

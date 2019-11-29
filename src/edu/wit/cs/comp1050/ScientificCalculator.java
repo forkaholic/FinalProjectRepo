@@ -5,13 +5,12 @@ public class ScientificCalculator extends BasicCalculator{
 	public ScientificCalculator() {}
 
 	/**
-	 * This method returns log of given base and number
+	 * This method returns log 10 of given number
 	 * @param num
-	 * @param base
-	 * @return log(base)num
+	 * @return log(num)
 	 */
-	public double log(double num, double base) {
-		return Math.log10(num) / Math.log10(base);
+	public double log(double num) {
+		return Math.log10(num);
 	}
 	
 	/**
@@ -58,5 +57,12 @@ public class ScientificCalculator extends BasicCalculator{
 	 */
 	public double pow(double base, double power) {
 		return Math.pow(base, power);
+	}
+	
+	public String solve(boolean scientific) {
+		if(!scientific) {
+			return super.solve();
+		}
+		return "Solution";
 	}
 }

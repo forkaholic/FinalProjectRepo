@@ -26,6 +26,7 @@ public class CalculatorGUI extends Application{
 	public void start(Stage primaryStage) throws Exception {
 		ScientificCalculator storage = new ScientificCalculator();
 		Text screen = new Text(currentCalc.toString());
+		screen.minHeight(300);
 		//BUTTONS*****************************************
 		/**
 		 * DVarga, 2016, Source Code. https://stackoverflow.com/questions/40967789/check-which-button-object-is-clicked-using-javafx
@@ -59,6 +60,7 @@ public class CalculatorGUI extends Application{
 		equals.setMinSize(600,50);	
 				
 		//PANES IN ORDER**********************************
+		HBox subBase = new HBox();
 		VBox base = new VBox();
 		base.setAlignment(Pos.CENTER);
 		HBox ansCandToggle = new HBox();
@@ -74,9 +76,11 @@ public class CalculatorGUI extends Application{
 		HBox mainr4 = new HBox();
 
 		//BUTTON & TEXT ASSEMBLY**************************
+		subBase.getChildren().add(base);
 		base.getChildren().add(screen);
 		screen.setX(100);
 		screen.setY(100);
+		
 		//ANS,TOGGLE,CLEAR
 		ansCandToggle.getChildren().add(buttons[10]);
 		ansCandToggle.getChildren().add(toggle);
@@ -94,21 +98,25 @@ public class CalculatorGUI extends Application{
 		sciencer2.getChildren().add(buttons[23]);
 		sciencer2.getChildren().add(buttons[24]);
 		
+		//7,8,9,+
 		mainr1.getChildren().add(buttons[7]);
 		mainr1.getChildren().add(buttons[8]);
 		mainr1.getChildren().add(buttons[9]);
 		mainr1.getChildren().add(buttons[15]);
 		
+		//4,5,6,-
 		mainr2.getChildren().add(buttons[4]);
 		mainr2.getChildren().add(buttons[5]);
 		mainr2.getChildren().add(buttons[6]);
 		mainr2.getChildren().add(buttons[16]);
 		
+		//1,2,3,*
 		mainr3.getChildren().add(buttons[1]);
 		mainr3.getChildren().add(buttons[2]);
 		mainr3.getChildren().add(buttons[3]);
 		mainr3.getChildren().add(buttons[17]);
 		
+		//.,0,-,/
 		mainr4.getChildren().add(buttons[11]);
 		mainr4.getChildren().add(buttons[0]);
 		mainr4.getChildren().add(buttons[12]);
@@ -128,50 +136,69 @@ public class CalculatorGUI extends Application{
 		main.getChildren().add(equals);
 		
 		//OUTPUT WINDOW****************
-		Stage output = new Stage();		
-		output.setTitle("Calculations");
 		VBox outBox = new VBox();
-		output.setScene(new Scene(outBox, 500, 220));
-		output.show();
+		subBase.getChildren().add(outBox);
+		
+		//Clearing class created to reduce repeated code
+		final class clearClass {
+			public void handle() {
+				//Clears the equation
+				currentCalc.delete(0, currentCalc.length());
+				//Clears the screen
+				screen.setText("");
+			}
+		}
+		
+		//Unable to clear unless an instance of clearClass is made
+		clearClass clearer = new clearClass();
 		
 		//ACTION EVENTS****************		
 		toggle.setOnAction(event -> {
+			//Checks current mode to determine action
 			if(!this.scientific) {
+				//Updates visible buttons
 				primaryStage.setTitle("Scientific Calculator");
 				base.getChildren().add(2, science);
+				clearer.handle();
 				primaryStage.show();
 				this.scientific = true;
 			}
 			
 			else {
+				//Updates visible buttons
 				primaryStage.setTitle("Basic Calculator");
 				base.getChildren().remove(2);
+				clearer.handle();
 				primaryStage.show();
 				this.scientific = false;
 			}
 		});
 		
 		clear.setOnAction(event -> {
-			currentCalc.delete(0, currentCalc.length());
-			screen.setText(currentCalc.toString());
+			clearer.handle();
 		});
 		
 		equals.setOnAction(event -> {
-			if(storage.getArr().size() == 10) {
-				outBox.getChildren().remove(0);
-				storage.removeFirst();
+			//Prevents empty equations from triggering any actions
+			if(currentCalc.length() > 0) {
+				//Sets the last result in the calculator array
+				storage.setResult(currentCalc.toString());
+				//Equation = Solution
+				System.out.println(scientific);
+				outBox.getChildren().add(new Text(String.format("%s = %s",currentCalc.toString(), storage.solve(scientific))));
+				clearer.handle();
+				//Prevents the output box from getting too large
+				if(storage.getArr().size() == 11){
+					//Clears the top Text from the output box
+					outBox.getChildren().remove(0);
+					//Removes the first String from the solution array
+					storage.removeFirst();
+				}
 			}
-			storage.setResult(currentCalc.toString());
-			outBox.getChildren().add(new Text(currentCalc.toString()));
-			currentCalc.delete(0, currentCalc.length());
-			screen.setText(currentCalc.toString());
 		});
 		
 		primaryStage.setTitle("Basic Calculator");
-		primaryStage.setScene(new Scene(base, 600, 450));
+		primaryStage.setScene(new Scene(subBase, 1000, 450));
 		primaryStage.show();
 	}
-
 }
-
-

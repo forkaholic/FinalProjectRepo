@@ -75,12 +75,6 @@ public class BasicCalculator {
 	public String solve(Double prevAnswer) {
 		try {	
 			String[] strings = this.getResult().split(" ");
-			if(strings.length == 1) {
-				try {
-					return Double.toString(Double.parseDouble(strings[0]));
-				} catch(Exception e) {return "Error - No numbers entered.";}
-			}
-			//Stack for all numbers
 			Stack<String> operands = new Stack<>();
 			//Stack for all symbols
 			Stack<String> operators = new Stack<>();

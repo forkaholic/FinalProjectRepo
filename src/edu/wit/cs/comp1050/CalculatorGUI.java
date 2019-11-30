@@ -199,7 +199,7 @@ public class CalculatorGUI extends Application{
 					try {
 						answer = Double.parseDouble(s);
 					} catch(Exception e) {answer = null;}
-					buttons[10].setText(String.format("ANS%n%.3f", answer));
+					buttons[10].setText(String.format("ANS%n%.4f", answer));
 				});
 				//Equation = Solution
 				outBox.getChildren().add(ans);

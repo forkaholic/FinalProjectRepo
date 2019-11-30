@@ -72,23 +72,9 @@ public class BasicCalculator {
 	  * This method solves any given calculation unless is violates a rule given by the functions or has unbalanced parenthesis.
 	  * @return solution
 	  */
-	public String solve() {
-		try {
-			String temp = this.getResult();
-			StringBuilder tEquation = new StringBuilder();
-			for(int i = 0; i < temp.length(); i++) {
-				char c = temp.charAt(i);
-				if(c == '+' || c == '-' || c == '*' || c == '/') {
-					tEquation.append(" ");
-					tEquation.append(c);
-					tEquation.append(" ");
-				}
-				else {
-					tEquation.append(c);
-				}
-			}
-			
-			String[] strings = tEquation.toString().split(" ");
+	public String solve(Double prevAnswer) {
+		try {	
+			String[] strings = this.getResult().split(" ");
 			if(strings.length == 1) {
 				try {
 					return Double.toString(Double.parseDouble(strings[0]));
@@ -122,10 +108,13 @@ public class BasicCalculator {
 					}
 				}
 				else {
-					operands.push(strings[i]);
-					System.out.println(strings[0]);
+					if(strings[i].equals("ANS")) {
+						operands.push(Double.toString(prevAnswer));
+					}
+					else {
+						operands.push(strings[i]);
+					}
 				}
-				
 			}
 			
 			while(!operators.isEmpty()) {

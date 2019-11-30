@@ -59,9 +59,9 @@ public class ScientificCalculator extends BasicCalculator{
 		return Math.pow(base, power);
 	}
 	
-	public String solve(boolean scientific) {
+	public String solve(boolean scientific, Double answer) {
 		if(!scientific) {
-			return super.solve();
+			return super.solve(answer);
 		}
 		return "Solution";
 	}

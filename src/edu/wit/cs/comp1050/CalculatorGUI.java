@@ -1,30 +1,40 @@
 package edu.wit.cs.comp1050;
 import javafx.application.Application;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
-//Late as Always
+//Devin Salter
+
 public class CalculatorGUI extends Application{
 	
+	//Checks the current mode of operation, with basic being default (basic or scientific)
 	private boolean scientific;
 
+	//Current equation being assembled by user
 	private StringBuilder currentCalc = new StringBuilder();
 	
+	//Current selected answer
+	private Double answer;
+	/**
+	 * Launches start method
+	 * @param args
+	 */
 	public static void main(String[] args) {
 		launch(args);
 	}
 	
-	@SuppressWarnings("unused")
+	/**
+	 * This method takes care of the GUI for the calculator class, as well as making calls to the calculator objects themselves to solve provided equations.
+	 */
 	public void start(Stage primaryStage) throws Exception {
+		//Creation of calculator that stores answers
 		ScientificCalculator storage = new ScientificCalculator();
+		//Text display at the top of the calculator
 		Text screen = new Text(currentCalc.toString());
 		screen.minHeight(300);
 		//BUTTONS*****************************************
@@ -32,8 +42,8 @@ public class CalculatorGUI extends Application{
 		 * DVarga, 2016, Source Code. https://stackoverflow.com/questions/40967789/check-which-button-object-is-clicked-using-javafx
 		 */		
 		String[] strings = {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "ANS", ".",
-				"_", "(", ")", "+", "-", "*", "/", "log",
-				"\u221A(", "^(", "e^(", "sin(", "cos("};
+				"-1", " ( ", " ) ", " + ", " - ", " * ", " / ", " log ",
+				" \u221A ", " ^ ", " e^ ", " sin ", " cos "};
 		Button[] buttons = new Button[strings.length];
 		for(int i = 0; i < strings.length; i++) {
 			final int buttonID = i;
@@ -122,8 +132,6 @@ public class CalculatorGUI extends Application{
 		mainr4.getChildren().add(buttons[12]);
 		mainr4.getChildren().add(buttons[18]);
 		
-		
-		
 		//PANE ASSEMBLY****************************
 		base.getChildren().add(ansCandToggle);
 		science.getChildren().add(sciencer1);
@@ -183,9 +191,18 @@ public class CalculatorGUI extends Application{
 			if(currentCalc.length() > 0) {
 				//Sets the last result in the calculator array
 				storage.setResult(currentCalc.toString());
+				
+				Text ans = new Text(String.format("%s = %s",currentCalc.toString(), storage.solve(scientific, answer)));
+				//Allows for selection of answer for ANS button
+				ans.setOnMouseClicked(value -> {
+					String s = ans.getText().substring(ans.getText().indexOf("=") + 2);
+					try {
+						answer = Double.parseDouble(s);
+					} catch(Exception e) {answer = null;}
+					buttons[10].setText(String.format("ANS%n%.3f", answer));
+				});
 				//Equation = Solution
-				System.out.println(scientific);
-				outBox.getChildren().add(new Text(String.format("%s = %s",currentCalc.toString(), storage.solve(scientific))));
+				outBox.getChildren().add(ans);
 				clearer.handle();
 				//Prevents the output box from getting too large
 				if(storage.getArr().size() == 11){

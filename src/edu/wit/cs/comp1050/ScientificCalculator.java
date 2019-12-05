@@ -66,6 +66,6 @@ public class ScientificCalculator extends BasicCalculator{
 		if(!scientific) {
 			return super.solve();
 		}
-		return "Solution";
+		return super.solve();
 	}
 }

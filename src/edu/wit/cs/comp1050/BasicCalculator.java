@@ -72,7 +72,7 @@ public class BasicCalculator {
 	  * This method solves any given calculation unless is violates a rule given by the functions or has unbalanced parenthesis.
 	  * @return solution
 	  */
-	public String solve(Double prevAnswer) {
+	public String solve() {
 		try {	
 			String[] strings = this.getResult().split(" ");
 			Stack<String> operands = new Stack<>();
@@ -100,29 +100,41 @@ public class BasicCalculator {
 						}
 						operands.push(Double.toString(d));
 					}
+					System.out.println(operands.peek());
 				}
 				else {
-					if(strings[i].equals("ANS")) {
-						operands.push(Double.toString(prevAnswer));
-					}
-					else {
-						operands.push(strings[i]);
-					}
+					operands.push(strings[i]);
 				}
 			}
-			
+
+			Stack<String> newOperators = new Stack<>();
+			Stack<String> newOperands = new Stack<>();
 			while(!operators.isEmpty()) {
-				String op = operators.pop();
-				Double d2 = Double.parseDouble(operands.pop());
-				Double d1 = Double.parseDouble(operands.pop());
+				//Reverses the order so that operations are done from left to right
+				newOperators.push(operators.pop());
+			}
+			while(!operands.isEmpty()) {
+				//Reverses order
+				newOperands.push(operands.pop());
+			}
+			while(!newOperators.isEmpty()) {
+				String op = newOperators.pop();
+				Double d1 = Double.parseDouble(newOperands.pop());
+				Double d2 = Double.parseDouble(newOperands.pop());
 				if(op.equals("+")) {
-					operands.push(Double.toString(add(d1, d2)));
+					newOperands.push(Double.toString(add(d1, d2)));
 				}
 				else {
-					operands.push(Double.toString(subtract(d1, d2)));
+					newOperands.push(Double.toString(subtract(d1, d2)));
 				}
 			}
-			return operands.pop();
+			String d = newOperands.pop();
+			//Separates double answers from ints
+			//Prevents negatives from being registered as integers as all - < 0
+			if(Math.abs(Double.parseDouble(d) - Integer.parseInt(d.substring(0,d.indexOf(".")))) > 0) {
+				return d;
+			}
+			return d.substring(0, d.indexOf("."));
 		} catch(Exception e) {return "Error - Invalid equation.";} 
 	}
 	

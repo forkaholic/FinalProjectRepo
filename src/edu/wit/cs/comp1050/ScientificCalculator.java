@@ -1,5 +1,7 @@
 package edu.wit.cs.comp1050;
 
+import java.util.Stack;
+
 @SuppressWarnings("serial")
 public class ScientificCalculator extends BasicCalculator{
 	public ScientificCalculator() {}
@@ -9,7 +11,7 @@ public class ScientificCalculator extends BasicCalculator{
 	 * @param num
 	 * @return log(num)
 	 */
-	public double log(double num) {
+	public static double log(double num) {
 		return Math.log10(num);
 	}
 	
@@ -18,7 +20,7 @@ public class ScientificCalculator extends BasicCalculator{
 	 * @param num
 	 * @return sqrt(num)
 	 */
-	public double sqrt(double num) {
+	public static double sqrt(double num) {
 		return Math.sqrt(num);
 	}
 	
@@ -27,7 +29,7 @@ public class ScientificCalculator extends BasicCalculator{
 	 * @param angle
 	 * @return sin(angle)
 	 */
-	public double sin(double angle) {
+	public static double sin(double angle) {
 		return Math.sin(angle);
 	}
 	
@@ -36,7 +38,7 @@ public class ScientificCalculator extends BasicCalculator{
 	 * @param angle
 	 * @return cos(angle)
 	 */
-	public double cos(double angle) {
+	public static double cos(double angle) {
 		return Math.cos(angle);
 	}
 	
@@ -45,7 +47,7 @@ public class ScientificCalculator extends BasicCalculator{
 	 * @param power
 	 * @return e^x
 	 */
-	public double exp(double power) {
+	public static double exp(double power) {
 		return Math.exp(power);
 	}
 	
@@ -55,13 +57,14 @@ public class ScientificCalculator extends BasicCalculator{
 	 * @param power
 	 * @return base^power
 	 */
-	public double pow(double base, double power) {
+	public static double pow(double base, double power) {
 		return Math.pow(base, power);
 	}
 	
-	public String solve(boolean scientific, Double answer) {
+	
+	public String solve(boolean scientific) {
 		if(!scientific) {
-			return super.solve(answer);
+			return super.solve();
 		}
 		return "Solution";
 	}

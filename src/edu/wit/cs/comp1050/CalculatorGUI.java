@@ -41,7 +41,7 @@ public class CalculatorGUI extends Application{
 		/**
 		 * DVarga, 2016, Source Code. https://stackoverflow.com/questions/40967789/check-which-button-object-is-clicked-using-javafx
 		 */		
-		String[] strings = {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "ANS", ".",
+		String[] strings = {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", ".",
 				"-1", " ( ", " ) ", " + ", " - ", " * ", " / ", " log ",
 				" \u221A ", " ^ ", " e^ ", " sin ", " cos "};
 		Button[] buttons = new Button[strings.length];
@@ -55,19 +55,21 @@ public class CalculatorGUI extends Application{
 			});
 		}
 		
-		buttons[20].setText("\u221A(x)");
-		buttons[21].setText("x^y");
-		buttons[22].setText("e^x");
-		buttons[23].setText("sin(x)");
-		buttons[24].setText("cos(x)");
+		buttons[19].setText("\u221A(x)");
+		buttons[20].setText("x^y");
+		buttons[21].setText("e^x");
+		buttons[22].setText("sin(x)");
+		buttons[23].setText("cos(x)");
 				
 		Button toggle = new Button("Mode");
 		Button clear = new Button("C");
 		Button equals = new Button("=");
+		Button ansB = new Button("ANS");
 		
 		toggle.setMinSize(300, 50);
 		clear.setMinSize(150, 50);
 		equals.setMinSize(600,50);	
+		ansB.setMinSize(150, 50);
 				
 		//PANES IN ORDER**********************************
 		HBox subBase = new HBox();
@@ -92,45 +94,45 @@ public class CalculatorGUI extends Application{
 		screen.setY(100);
 		
 		//ANS,TOGGLE,CLEAR
-		ansCandToggle.getChildren().add(buttons[10]);
+		ansCandToggle.getChildren().add(ansB);
 		ansCandToggle.getChildren().add(toggle);
 		ansCandToggle.getChildren().add(clear);
 		
 		//E^X,LOG,(,)
-		sciencer1.getChildren().add(buttons[22]);
-		sciencer1.getChildren().add(buttons[19]);
+		sciencer1.getChildren().add(buttons[21]);
+		sciencer1.getChildren().add(buttons[18]);
+		sciencer1.getChildren().add(buttons[12]);
 		sciencer1.getChildren().add(buttons[13]);
-		sciencer1.getChildren().add(buttons[14]);
 		
 		//X^Y,SQRT,SIN,COS
-		sciencer2.getChildren().add(buttons[21]);
 		sciencer2.getChildren().add(buttons[20]);
+		sciencer2.getChildren().add(buttons[19]);
+		sciencer2.getChildren().add(buttons[22]);
 		sciencer2.getChildren().add(buttons[23]);
-		sciencer2.getChildren().add(buttons[24]);
 		
 		//7,8,9,+
 		mainr1.getChildren().add(buttons[7]);
 		mainr1.getChildren().add(buttons[8]);
 		mainr1.getChildren().add(buttons[9]);
-		mainr1.getChildren().add(buttons[15]);
+		mainr1.getChildren().add(buttons[14]);
 		
 		//4,5,6,-
 		mainr2.getChildren().add(buttons[4]);
 		mainr2.getChildren().add(buttons[5]);
 		mainr2.getChildren().add(buttons[6]);
-		mainr2.getChildren().add(buttons[16]);
-		
+		mainr2.getChildren().add(buttons[15]);
+	
 		//1,2,3,*
 		mainr3.getChildren().add(buttons[1]);
 		mainr3.getChildren().add(buttons[2]);
 		mainr3.getChildren().add(buttons[3]);
-		mainr3.getChildren().add(buttons[17]);
+		mainr3.getChildren().add(buttons[16]);
 		
 		//.,0,-,/
-		mainr4.getChildren().add(buttons[11]);
+		mainr4.getChildren().add(buttons[10]);
 		mainr4.getChildren().add(buttons[0]);
-		mainr4.getChildren().add(buttons[12]);
-		mainr4.getChildren().add(buttons[18]);
+		mainr4.getChildren().add(buttons[11]);
+		mainr4.getChildren().add(buttons[17]);
 		
 		//PANE ASSEMBLY****************************
 		base.getChildren().add(ansCandToggle);
@@ -182,6 +184,13 @@ public class CalculatorGUI extends Application{
 			}
 		});
 		
+		ansB.setOnAction(event -> {
+			if(answer != null) {
+				currentCalc.append(answer);
+				screen.setText(currentCalc.toString());
+			}
+		});
+		
 		clear.setOnAction(event -> {
 			clearer.handle();
 		});
@@ -192,14 +201,15 @@ public class CalculatorGUI extends Application{
 				//Sets the last result in the calculator array
 				storage.setResult(currentCalc.toString());
 				
-				Text ans = new Text(String.format("%s = %s",currentCalc.toString(), storage.solve(scientific, answer)));
+				Text ans = new Text(String.format("%s = %s",currentCalc.toString(), storage.solve(scientific)));
 				//Allows for selection of answer for ANS button
 				ans.setOnMouseClicked(value -> {
 					String s = ans.getText().substring(ans.getText().indexOf("=") + 2);
+					//Sets answer to the answer or null depending on whether or not the equation is valid
 					try {
 						answer = Double.parseDouble(s);
 					} catch(Exception e) {answer = null;}
-					buttons[10].setText(String.format("ANS%n%.4f", answer));
+					ansB.setText(String.format("ANS%n%.4f", answer));
 				});
 				//Equation = Solution
 				outBox.getChildren().add(ans);
@@ -213,7 +223,7 @@ public class CalculatorGUI extends Application{
 				}
 			}
 		});
-		
+		primaryStage.setResizable(false);
 		primaryStage.setTitle("Basic Calculator");
 		primaryStage.setScene(new Scene(subBase, 1000, 450));
 		primaryStage.show();

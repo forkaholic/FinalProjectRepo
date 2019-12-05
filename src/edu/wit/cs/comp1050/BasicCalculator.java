@@ -18,7 +18,7 @@ public class BasicCalculator {
 	 * @param num2 right hand number
 	 * @return sum
 	 */
-	public double add(double num1, double num2) {
+	public static double add(double num1, double num2) {
 		return num1 + num2;	
 	}
 	
@@ -28,7 +28,7 @@ public class BasicCalculator {
 	 * @param num2 right hand number
 	 * @return difference
 	 */
-	public double subtract(double num1, double num2) {
+	public static double subtract(double num1, double num2) {
 		return num1 - num2;
 	}
 	
@@ -38,7 +38,7 @@ public class BasicCalculator {
 	 * @param num2 right hand number
 	 * @return product
 	 */
-	public double multiply(double num1, double num2) {
+	public static double multiply(double num1, double num2) {
 		return num1 * num2;
 	}
 	
@@ -48,7 +48,7 @@ public class BasicCalculator {
 	 * @param num2 right hand number
 	 * @return either quotient or null
 	 */
-	public Double divide(double num1, double num2) {
+	public static Double divide(double num1, double num2) {
 		return (num2 != 0) ? (num1 / num2) : null;
 	}
 	

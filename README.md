@@ -37,7 +37,7 @@ To run the calculator, double click the JAR file to open it
 
 ## Demo video
 
-(Link : REPLACE LINK)
+(Link : https://youtu.be/fZjct6xDenM)
 
 ## References
 
